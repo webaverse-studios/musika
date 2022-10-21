@@ -74,10 +74,10 @@ async def root(request: Request, background_tasks: BackgroundTasks, duration: in
 
 @app.get("/generate_result")
 async def result(request: Request, query_id: str):
-    print('result')
     if query_id in QUERY_BUFFER:
         if QUERY_BUFFER[query_id].status == "done":
             resp = FileResponse(QUERY_BUFFER[query_id].result, filename="output.wav")
+            resp.headers["Content-Type"] = "audio/wav"
             del QUERY_BUFFER[query_id]
             return resp
         return {"status": QUERY_BUFFER[query_id].status}
