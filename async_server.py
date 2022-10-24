@@ -38,6 +38,7 @@ def load_model():
 
     # initialize networks
     model_functions = Models_functions(args)
+    model_functions.download_networks()
     models_ls = model_functions.get_networks()
     generator = Generator(args)
 
@@ -78,6 +79,7 @@ async def result(request: Request, query_id: str):
         if QUERY_BUFFER[query_id].status == "done":
             resp = FileResponse(QUERY_BUFFER[query_id].result, filename="output.wav")
             resp.headers["Content-Type"] = "audio/wav"
+            print(resp)
             del QUERY_BUFFER[query_id]
             return resp
         return {"status": QUERY_BUFFER[query_id].status}
